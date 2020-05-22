@@ -36,7 +36,6 @@
     var introloop=[];
     var turkcode = 'C' + (Math.floor(Math.random() * 899999) + 100000).toString();
 	  var images = [
-      './img/instruct-0.jpg',
       './img/instruct-1.jpg',
       './img/instruct-2-FL-full.jpg',
       './img/instruct-2-FL-partial.jpg',
@@ -66,7 +65,7 @@
 
     // function to start the jsPsych experiment
     function startExperiment(){
-	    
+
       // record the turkcode in the jsPsych data
       jsPsych.data.addProperties({
         turkcode: turkcode,
@@ -290,8 +289,7 @@ timeline.push({
 // -------- Instructions & quiz --------
 var instructionsFull = {
     type: 'instructions',
-    pages: ['<img src="./img/instruct-0.jpg" width = "900></img>',
-    '<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900></img>',
+    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900></img>',
     '<img src="./img/instruct-2-FL-full.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
@@ -302,8 +300,7 @@ var instructionsFull = {
 // The set of instructions for the Partial Feedback Condition
 var instructionsPartial = {
     type: 'instructions',
-    pages: ['<img src="./img/instruct-0.jpg" width = "900></img>',
-    '<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
+    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
     '<img src="./img/instruct-2-FL-partial.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
@@ -539,7 +536,7 @@ function conditionalTimeline(){
 //
 var learningPhase = {
     timeline: conditionalTimeline(),
-    repetitions: 128, //16,
+    repetitions: 16, //16,
     randomize_order: true
 };
             
@@ -592,7 +589,7 @@ on_finish: function(data){
 
 var testPhase = {
 timeline: [decision_TP, feedbackTP],
-repetitions: 32,
+repetitions: 8,
 randomize_order: false,
 };
 
