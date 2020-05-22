@@ -73,14 +73,13 @@
         condition: 'freqLoss', // frequent loss condition
         browserinfo: navigator.userAgent, 
       });
-
+      
       function saveData(name, data){
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'save_data.php');
-        xhr.setRequestHeader('Content-Type','application/json');
-        xhr.send(JSON.stringify({filename: filename, filedata: data}));
-      };
-
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'save_data.php');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({filename: filename, filedata: data}));
+      };
 
       jsPsych.init({
         timeline: timeline,
@@ -289,7 +288,7 @@ timeline.push({
 // -------- Instructions & quiz --------
 var instructionsFull = {
     type: 'instructions',
-    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900></img>',
+    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
     '<img src="./img/instruct-2-FL-full.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
@@ -544,7 +543,7 @@ timeline.push(learningPhase);
 
 var TP_instructions = {
 type:'external-html',
-url: "./pages/testinstr.html",
+url: "./pages/testinstr-fl.html",
 cont_btn: "next",
 };
 timeline.push(TP_instructions);
