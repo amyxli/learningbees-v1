@@ -35,6 +35,7 @@
     var timeline=[];
     var introloop=[];
     var turkcode = 'C' + (Math.floor(Math.random() * 899999) + 100000).toString();
+    var filename = "unsw-learningbees-v1_"+ turkcode;
 	  var images = [
       './img/instruct-1.jpg',
       './img/instruct-2-full.jpg',
@@ -60,9 +61,11 @@
       './img/A1-B1-L1-W1.jpg',
 	   ];
 
-    var filename = "unsw-learningbees-v1_"+ turkcode;
-
-
+      // Code which stops participants from refreshing (or leaving the page) without a warning
+      window.onbeforeunload = function(){
+        return "Are you sure you want to leave the experiment?";
+      };
+      
     // function to start the jsPsych experiment
     function startExperiment(){
 
@@ -73,13 +76,14 @@
         condition: 'freqGain',// frequent gain condition
         browserinfo: navigator.userAgent, 
       });
-            
-      function saveData(name, data){
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'save_data.php');
+         
+      function saveData(name, data){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'save_data.php');
         xhr.setRequestHeader('Content-Type','application/json');
-        xhr.send(JSON.stringify({filename: filename, filedata: data}));
+        xhr.send(JSON.stringify({filename: filename, filedata: data}));
       };
+   
 
       jsPsych.init({
         timeline: timeline,
@@ -87,10 +91,11 @@
         /*on_finish: function() {
           jsPsych.data.get().localSave('csv','test.csv')
          },  */// uncomment to locally save data file
-        on_finish: function(data){saveData(filename, jsPsych.data.get().csv())} , // uncomment for cloud save */
         show_progress_bar: false,
-        auto_update_progress_bar: false
+        auto_update_progress_bar: false,
+        on_finish: function(data){saveData(filename, jsPsych.data.get().csv())}
       });
+
     }
 
 
@@ -406,7 +411,7 @@ var loop_node = {
   }
 };
 
-timeline.push(loop_node);
+//timeline.push(loop_node);
 
 /* success trial */
 
@@ -535,7 +540,7 @@ function conditionalTimeline(){
 //
 var learningPhase = {
   timeline: conditionalTimeline(),
-  repetitions: 16, //16,
+  repetitions: 1, //16,
   randomize_order: true
 };
           
@@ -588,7 +593,7 @@ var feedbackTP = {
 
 var testPhase = {
   timeline: [decision_TP, feedbackTP],
-  repetitions: 8,
+  repetitions: 1,
   randomize_order: false,
 };
 
@@ -679,6 +684,7 @@ var finished = {
 };
 
 timeline.push(finished);
+
 
   </script>
 </html>
