@@ -36,6 +36,7 @@
     var introloop=[];
     var turkcode = 'C' + (Math.floor(Math.random() * 899999) + 100000).toString();
 	  var images = [
+      './img/instruct-0.jpg',
       './img/instruct-1.jpg',
       './img/instruct-2-FL-full.jpg',
       './img/instruct-2-FL-partial.jpg',
@@ -299,7 +300,8 @@ timeline.push({
 // -------- Instructions & quiz --------
 var instructionsFull = {
     type: 'instructions',
-    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900></img>',
+    pages: ['<img src="./img/instruct-0.jpg" width = "900></img>',
+    '<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900></img>',
     '<img src="./img/instruct-2-FL-full.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
@@ -310,7 +312,8 @@ var instructionsFull = {
 // The set of instructions for the Partial Feedback Condition
 var instructionsPartial = {
     type: 'instructions',
-    pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
+    pages: ['<img src="./img/instruct-0.jpg" width = "900></img>',
+    '<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
     '<img src="./img/instruct-2-FL-partial.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
