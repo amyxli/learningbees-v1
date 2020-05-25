@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>UNSW Monsters Game</title>
+    <title>UNSW HoneyHarvester Game</title>
     <script src="./js/jspsych.js"></script>
     <script src="./js/plugins/jspsych-fullscreen.js"></script>
     <script src="./js/plugins/jspsych-instructions.js"></script>
@@ -65,9 +65,16 @@
       window.onbeforeunload = function(){
         return "Are you sure you want to leave the experiment?";
       };
-      
+	  
+      jsPsych.data.addProperties({
+        turkcode: turkcode,
+        relevantDim: relevantDim,
+        condition: 'freqGain',// frequent gain condition
+        browserinfo: navigator.userAgent, 
+      });
     // function to start the jsPsych experiment
-    function startExperiment(){
+
+	function startExperiment(){
 
       // record the turkcode in the jsPsych data
       jsPsych.data.addProperties({
@@ -90,13 +97,15 @@
         preload_images: images,
         /*on_finish: function() {
           jsPsych.data.get().localSave('csv','test.csv')
-         },  */// uncomment to locally save data file
+         }, // uncomment to locally save data file */
         show_progress_bar: false,
         auto_update_progress_bar: false,
-        on_finish: function(data){saveData(filename, jsPsych.data.get().csv())}
+        on_finish: function(data){
+			saveData(filename, jsPsych.data.get().csv())
+		}
       });
 
-    }
+    } 
 
 
     // function to end the experiment
@@ -411,7 +420,7 @@ var loop_node = {
   }
 };
 
-//timeline.push(loop_node);
+timeline.push(loop_node);
 
 /* success trial */
 
@@ -540,7 +549,7 @@ function conditionalTimeline(){
 //
 var learningPhase = {
   timeline: conditionalTimeline(),
-  repetitions: 1, //16,
+  repetitions: 128, //16,
   randomize_order: true
 };
           
@@ -593,7 +602,7 @@ var feedbackTP = {
 
 var testPhase = {
   timeline: [decision_TP, feedbackTP],
-  repetitions: 1,
+  repetitions: 32,
   randomize_order: false,
 };
 
