@@ -3,7 +3,7 @@ var welcome = {};
 // --------------  things that vary from task to task --------------
 
 welcome.task = {};
-welcome.task.blurb = '<b>"Learning Bees"</b> is a short psychological study investigating how people make decisions.';
+welcome.task.blurb = '<b>"The HoneyHarvester Game"</b> is a short psychological study investigating how people make decisions.';
 welcome.task.time = '20–30 minutes';
 welcome.task.pay = 'US$1.50';
 
