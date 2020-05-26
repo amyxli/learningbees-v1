@@ -66,14 +66,7 @@
         return "Are you sure you want to leave the experiment?";
       };
 	  
-      jsPsych.data.addProperties({
-        turkcode: turkcode,
-        relevantDim: relevantDim,
-        condition: 'freqGain',// frequent gain condition
-        browserinfo: navigator.userAgent, 
-      });
-    // function to start the jsPsych experiment
-
+    
 	function startExperiment(){
 
       // record the turkcode in the jsPsych data
@@ -101,8 +94,9 @@
         show_progress_bar: false,
         auto_update_progress_bar: false,
         on_finish: function(data){
-			saveData(filename, jsPsych.data.get().csv())
-		}
+			    saveData(filename, jsPsych.data.get().csv());
+			    document.write('<div id="endscreen" class="endscreen" style="width:1000px"><div class="endscreen" style="text-align:center; border:0px solid; padding:10px; font-size:120%; width:800px; float:right"><p><br><br><br>All done!<br><br>Your completion code is <span id="turkcode" style="font-weight:bold;font-size:130%">' + turkcode + '</span>. To receive payment for the HIT, return to the Amazon Mechanical Turk page and enter this code. Please contact us if something goes wrong and we\'ll fix it as quickly as possible.</p></div></div>')
+		    }
       });
 
     } 
@@ -118,7 +112,9 @@
 
 
     // -------- set up accumulating variables
-    var i = 0; // for showing the next stimulis
+    var i = 0; // for showing the next learning phase bee
+    var k = 0; // for showing the next test phase bee
+    
     
     // -- for points
     var pointsInitial = 50;
@@ -483,12 +479,14 @@ var decision_LP = {
     choices: ['Harvest', 'Avoid'],
     on_finish: function(data){
       i = i + 1;
+      data.i = i;
       return showActualPoints();
     },
     counter_displayed: function(data){
       return pointsCurrent;
     },
 };
+
 
 var feedbackPartial = {
   type: 'html-keyboard-response',
@@ -509,6 +507,7 @@ var feedbackPartial = {
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
     data.earnedCumulative = pointsCurrent;
+    data.i = i;
   }
 };
 
@@ -533,6 +532,7 @@ var feedbackFull = {
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
     data.earnedCumulative = pointsCurrent;
+    data.i = i;
   }
 };
 
@@ -550,7 +550,7 @@ function conditionalTimeline(){
 var learningPhase = {
   timeline: conditionalTimeline(),
   repetitions: 128, //16,
-  randomize_order: true
+  randomize_order: false
 };
           
 timeline.push(learningPhase);
@@ -558,20 +558,22 @@ timeline.push(learningPhase);
 var TP_instructions = {
 type:'external-html',
 url: "./pages/testinstr-fg.html",
-cont_btn: "next",
+cont_btn: "next"
 };
+
 timeline.push(TP_instructions);
 
 // the test phase
 var decision_TP = {
       type: 'html-button-response',
       stimulus: function(){
-        return "<img src = 'img/" + TP_bees[i] + ".jpg' width = '600'>"
+        return "<img src = 'img/" + TP_bees[k] + ".jpg' width = '600'>"
       },
       prompt: "Harvest honey from this hive?",
       choices: ['Harvest', 'Avoid'],
       on_finish: function(data){
-        i = i + 1;
+        k = k + 1;
+        data.k = k;
       },
   };
 
@@ -596,7 +598,8 @@ var feedbackTP = {
   on_finish: function(data){
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
-    data.earnedCumulative = pointsCurrent;
+    data.earnedCumulative = pointsCurrent;    
+    data.k = k;
   }
 };
 
@@ -612,7 +615,7 @@ timeline.push(testPhase);
 
 var endquestions = {
   type: 'survey-html-form',
-  preamble: 'You\'ve finished harvesting honey! Congratulations!',
+  preamble: '<b>You\'ve finished harvesting honey! Congratulations!</b>',
   html: '<p> We have a couple of short questions before you complete the experiment. You will be eligible for payment once you answer the following questions. </p>'+
   '<p>About what percentage of beehives do you think contained dangerous bees? (enter a value between 0 and 100.)</p>' +
   '<input type="number" min="0" max="100"  onKeyUp="if(this.value>100){this.value=\'100\';}else if(this.value<0){this.value=\'0\';}" id="dangerpercent" name="dangerpercent" required>'+
@@ -682,7 +685,7 @@ var finished = {
   type: 'html-button-response',
   stimulus: function(){
     return 'You are all done with the beekeeper game! <br><br>You earned <b>' + pointsCurrent + '</b> points, <br> which equals a bonus of $' + calculateBonus() +
-    ' . <br><br> Please press the \'Done!\' button to complete the task and be eligible for payment.';
+    ' . <br><br> Please <b> press the \'Done!\' button </b> to complete the task and be eligible for payment. <br> <br>Please note that you will receive a code which should be entered onto the main HIT page (from which you were redirected to this game page.)';
   },
   on_finish: function(data){
     jsPsych.data.addProperties({
@@ -693,7 +696,6 @@ var finished = {
 };
 
 timeline.push(finished);
-
 
   </script>
 </html>

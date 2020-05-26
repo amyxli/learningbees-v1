@@ -151,7 +151,7 @@ welcome.section.consent =
     '           <li>I provide my consent for the information collected about me to be used for the purpose of this research study only.</li>'+
     '           <li>I have had an opportunity to ask questions and I am satisfied with the answers I have received;</li>'+
     '           <li>I freely agree to participate in this research study as described and understand that I am free to withdraw at any time during the study and withdrawal will not affect my relationship with any of the named organisations and/or research team members;</li>'+
-    '           <li>I understand that I will be given a copy of this document to keep. [Click <a href = "https://amyxli.github.io/learningbees/PISC-learningbees-approved-mturk.pdf" target="_blank"> <b>HERE</b> </a> to download a copy – this will open in a new tab];</li>'+
+    '           <li>I understand that I will be given a copy of this document to keep. [Click <a href = "https://amyxli.github.io/learningbees-demo/PISC-learningbees-approved-mturk.pdf" target="_blank"> <b>HERE</b> </a> to download a copy – this will open in a new tab];</li>'+
     '			<li>If I would like to receive a copy of the study results via email or post, I can provide my details on the next page and ask that they be used for this purpose only.</li>' +
     '			<p align="center">' +
     '           <input type="button" id="consentButton" class="consent jspsych-btn" value="I agree" onclick="welcome.click.consent()" >' +

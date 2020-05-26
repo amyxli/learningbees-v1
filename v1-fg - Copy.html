@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>UNSW HoneyHarvester Game</title>
-        <script src="./js/jspsych.js"></script>
-        <script src="./js/plugins/jspsych-fullscreen.js"></script>
-        <script src="./js/plugins/jspsych-instructions.js"></script>
-        <script src="./js/plugins/jspsych-html-keyboard-response.js"></script>
-        <script src="./js/plugins/jspsych-html-button-response.js"></script>
-        <script src="./js/plugins/jspsych-image-keyboard-response.js"></script>
-        <script src="./js/plugins/jspsych-external-html.js"></script>
-        <script src="./js/plugins/jspsych-survey-html-form.js"></script>
-        <script src="./js/welcome.js"></script>
-        <script src="./js/jquery.min.js"></script>
-        <link href="./js/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-      </head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>UNSW HoneyHarvester Game</title>
+    <script src="./js/jspsych.js"></script>
+    <script src="./js/plugins/jspsych-fullscreen.js"></script>
+    <script src="./js/plugins/jspsych-instructions.js"></script>
+    <script src="./js/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="./js/plugins/jspsych-html-button-response.js"></script>
+    <script src="./js/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="./js/plugins/jspsych-external-html.js"></script>
+    <script src="./js/plugins/jspsych-survey-html-form.js"></script>
+    <script src="./js/welcome.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <link href="./js/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+  </head>
 
   <body>
     <div id="welcome"></div>
@@ -35,11 +35,11 @@
     var timeline=[];
     var introloop=[];
     var turkcode = 'C' + (Math.floor(Math.random() * 899999) + 100000).toString();
-    var filename = "unsw-learningbees-v1_"+ turkcode;     // Code which stops participants from refreshing (or leaving the page) without a warning
-    var images = [
+    var filename = "unsw-learningbees-v1_"+ turkcode;
+	  var images = [
       './img/instruct-1.jpg',
-      './img/instruct-2-FL-full.jpg',
-      './img/instruct-2-FL-partial.jpg',
+      './img/instruct-2-full.jpg',
+      './img/instruct-2-partial.jpg',
       './img/instruct-3.jpg',
       
 
@@ -61,45 +61,45 @@
       './img/A1-B1-L1-W1.jpg',
 	   ];
 
-          // Code which stops participants from refreshing (or leaving the page) without a warning
-    window.onbeforeunload = function(){
+      // Code which stops participants from refreshing (or leaving the page) without a warning
+      window.onbeforeunload = function(){
         return "Are you sure you want to leave the experiment?";
       };
 	  
+    
+	function startExperiment(){
 
-      function startExperiment(){
+      // record the turkcode in the jsPsych data
+      jsPsych.data.addProperties({
+        turkcode: turkcode,
+        relevantDim: relevantDim,
+        condition: 'freqGain',// frequent gain condition
+        browserinfo: navigator.userAgent, 
+      });
+         
+      function saveData(name, data){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'save_data.php');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({filename: filename, filedata: data}));
+      };
+   
 
-// record the turkcode in the jsPsych data
-jsPsych.data.addProperties({
-  turkcode: turkcode,
-  relevantDim: relevantDim,
-  condition: 'freqLoss',// frequent gain condition
-  browserinfo: navigator.userAgent, 
-});
-   
-function saveData(name, data){
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'save_data.php');
-  xhr.setRequestHeader('Content-Type','application/json');
-  xhr.send(JSON.stringify({filename: filename, filedata: data}));
-};
+      jsPsych.init({
+        timeline: timeline,
+        preload_images: images,
+        /*on_finish: function() {
+          jsPsych.data.get().localSave('csv','test.csv')
+         }, // uncomment to locally save data file */
+        show_progress_bar: false,
+        auto_update_progress_bar: false,
+        on_finish: function(data){
+			    saveData(filename, jsPsych.data.get().csv());
+			    document.write('<div id="endscreen" class="endscreen" style="width:1000px"><div class="endscreen" style="text-align:center; border:0px solid; padding:10px; font-size:120%; width:800px; float:right"><p><br><br><br>All done!<br><br>Your completion code is <span id="turkcode" style="font-weight:bold;font-size:130%">' + turkcode + '</span>. To receive payment for the HIT, return to the Amazon Mechanical Turk page and enter this code. Please contact us if something goes wrong and we\'ll fix it as quickly as possible.</p></div></div>')
+		    }
+      });
 
-
-jsPsych.init({
-    timeline: timeline,
-    preload_images: images,
-    /*on_finish: function() {
-      jsPsych.data.get().localSave('csv','test.csv')
-    }, // uncomment to locally save data file */
-    show_progress_bar: false,
-    auto_update_progress_bar: false,
-    on_finish: function(data){
-      saveData(filename, jsPsych.data.get().csv());
-      document.write('<div id="endscreen" class="endscreen" style="width:1000px"><div class="endscreen" style="text-align:center; border:0px solid; padding:10px; font-size:120%; width:800px; float:right"><p><br><br><br>All done!<br><br>Your completion code is <span id="turkcode" style="font-weight:bold;font-size:130%">' + turkcode + '</span>. To receive payment for the HIT, return to the Amazon Mechanical Turk page and enter this code. Please contact us if something goes wrong and we\'ll fix it as quickly as possible.</p></div></div>')
-   }
-  });
-
-} 
+    } 
 
 
     // function to end the experiment
@@ -114,7 +114,7 @@ jsPsych.init({
     // -------- set up accumulating variables
     var i = 0; // for showing the next learning phase bee
     var k = 0; // for showing the next test phase bee
-
+    
     
     // -- for points
     var pointsInitial = 50;
@@ -181,7 +181,7 @@ jsPsych.init({
       return false;
     }
   }
-  
+
   // ------- Bee stimuli
 
   var bees_OG = shuffle(
@@ -205,10 +205,10 @@ jsPsych.init({
     ]   
   );
  
-  // depending on permutation, which are the dangerous and friendly bees
-  // i.e. conjunction bees
+ // depending on permutation, which are the dangerous and friendly bees
+// i.e. conjunction bees
 
-  function makeFriendlyBees(){
+function makeDangerousBees(){
   if (relevantDim == 'LB') {
     return [
       'A1-B1-L1-W0',
@@ -254,20 +254,20 @@ jsPsych.init({
   }
 }
 
-// show 6 dangerous and 2 friendly bees every 8 bees
+// show 6 friendly and 2 dangerous bees every 8 bees
 
 function makeBees(){ 
 
-  var bees_friendly = shuffle(makeFriendlyBees()); // shuffle friendly bees (4/16)
-  var bees_dangerous = bees_OG.filter(function(item) {
-    return !makeFriendlyBees().includes(item); 
-  }); // what is left over of all bees excluding the friendly ones. i.e., dangerous bees 
-  var bees_dangerous = shuffle(bees_dangerous); // shuffle dangerous bees (12/16)
+  var bees_dangerous = shuffle(makeDangerousBees()); // shuffle dangerous bees (4/16)
+  var bees_friendly = bees_OG.filter(function(item) {
+    return !makeDangerousBees().includes(item); 
+  }); // what is left over of all bees excluding the dangerous ones. i.e., friendly bees 
+  var bees_friendly = shuffle(bees_friendly); // shuffle friendly bees (12/16)
 
-  var bees_dangerous_1 = bees_dangerous.slice(0,6); //dangerous bees for first subblock of block, 6 dangerous
-  var bees_friendly_1 = bees_friendly.slice(0,2); // friendly bees for first subblock of block, 2 friendly
-  var bees_dangerous_2 = bees_dangerous.slice(6,); // '' for second subblock of block, 6 dangerous
-  var bees_friendly_2 = bees_friendly.slice(2,); // '' for second subblock of block, 2 friendly
+  var bees_dangerous_1 = bees_dangerous.slice(0,2); //dangerous bees for first subblock of block, 2 dangerous
+  var bees_friendly_1 = bees_friendly.slice(0,6); // friendly bees for first subblock of block, 6 friendly
+  var bees_dangerous_2 = bees_dangerous.slice(2,); // '' for second subblock of block, 2 dangerous
+  var bees_friendly_2 = bees_friendly.slice(6,); // '' for second subblock of block, 6 friendly
 
   var first_subblock = shuffle(bees_dangerous_1.concat(bees_friendly_1)); // combine friendly and dangerous and shuffle to form first subblock
   var second_subblock = shuffle(bees_dangerous_2.concat(bees_friendly_2)); //combine friendly and dangerous and shuffle to form second subblock
@@ -281,7 +281,7 @@ var bees = []; // initiate bees array
 for (var j = 0; j < 10; j++) {
   bees = bees.concat(makeBees());  // now repeat the makeBees function 10 times, concatenating each time
 }                           
-                          
+                                 
 // take the first 128 bees for learning phase, leave 32 for test phase.
 
 var LP_bees = bees.slice(0,128); // Learning phase bees
@@ -299,7 +299,7 @@ timeline.push({
 var instructionsFull = {
     type: 'instructions',
     pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
-    '<img src="./img/instruct-2-FL-full.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
+    '<img src="./img/instruct-2-full.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
     show_clickable_nav: true,
@@ -310,7 +310,7 @@ var instructionsFull = {
 var instructionsPartial = {
     type: 'instructions',
     pages: ['<img src="./img/instruct-1.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "900"></img>',
-    '<img src="./img/instruct-2-FL-partial.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
+    '<img src="./img/instruct-2-partial.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>',
     '<img src="./img/instruct-3.jpg" alt="If you don\'t see an image here, please contact the experimenter." width = "1000"></img>'
     ],
     show_clickable_nav: true,
@@ -359,7 +359,7 @@ var quiz = {
   '<select id="telldangerous" name="telldangerous" class="form-control">' +
   '   <option value="noresp" SELECTED></option>' +
 	'   <option value="color">Based on the color of the bee</option>' +
-	'   <option value="feature">Based on the features of the bee</option>' +
+	'   <option value="feature">Based on the features of the bee</option>' + 
   '   <option value="smoke">Based on the order in which you see the bees</option>' +
   '</select> <br>' +
   '<p>What happens when you avoid a bee variety?</p>' +
@@ -438,179 +438,192 @@ function showActualPoints(){
     var lastBee = jsPsych.data.get().last(1).values()[0].stimulus; // get last bee shown
     // change based on dim permutation
     if (lastChoice == 0 && (makeConjunctionBees(lastBee))) { 
-    return pointsAdded = 3; // change depending on loss condition
+      return pointsAdded = -3; // change depending on loss condition
     } else if (lastChoice == 0){
-    return pointsAdded = -1;
+      return pointsAdded = 1;
     } else {
-    return pointsAdded = 0;
+      return pointsAdded = 0;
+    }
+  };
+
+function showForgonePoints(){
+  var lastChoice = jsPsych.data.get().last(1).values()[0].button_pressed; // get last avoid/approach decision
+  var lastBee = jsPsych.data.get().last(1).values()[0].stimulus; // get last bee shown   
+  // change based on dim permutation
+  if (makeConjunctionBees(lastBee)) { 
+      return pointsForgone = -3; // change depending on loss condition
+    } else {
+      return pointsForgone = 1;
+  } 
+};
+
+function ffAvoidFeedback(){
+  showForgonePoints();
+  if (pointsForgone == -3) { // change depending on loss condition
+    return "Whew, you avoided being stung! You earned <b>" + pointsAdded + " </b> points."
+  } else if (pointsForgone == 1) {
+    return "Oops, you avoided a friendly hive. You earned <b>" + pointsAdded + " </b>points."
+  }
+};
+
+// function for recording 1D and 2D scores
+
+function dimScore(){
+  var lastChoice = jsPsych.data.get().last(1).values()[0].button_pressed; // get last avoid/approach decision
+    var lastBee = jsPsych.data.get().last(1).values()[0].stimulus; // get last bee shown
+    // change based on dim permutation
+    if (lastChoice == 0 && (makeConjunctionBees(lastBee))){
+      data.oneDim = 1;
+      data.twoDim = 1; // approaching a friendly bee is congruent with both 1D and 2D rules
+    } else if (lastChoice == 1 && (makeConjunctionBees(lastBee))) {
+      
     }
 };
 
-  function showForgonePoints(){
-    var lastChoice = jsPsych.data.get().last(1).values()[0].button_pressed; // get last avoid/approach decision
-    var lastBee = jsPsych.data.get().last(1).values()[0].stimulus; // get last bee shown   
-    // change based on dim permutation
-    if (makeConjunctionBees(lastBee)) { 
-        return pointsForgone = 3; // change depending on loss condition
-      } else {
-        return pointsForgone = -1;
-    } 
-  };
-
-  function ffAvoidFeedback(){
-    showForgonePoints();
-    if (pointsForgone == -1) { // change depending on loss condition
-      return "Whew, you avoided being stung! You earned <b>" + pointsAdded + " </b> points."
-    } else if (pointsForgone == 3) {
-      return "Oops, you avoided a friendly hive. You earned <b>" + pointsAdded + " </b>points."
-    }
-  };
-
-  
 // -------- the experiment itself -------
 
 // the learning phase
 var decision_LP = {
     type: 'html-button-response',
     stimulus: function(){
-        return "<img src = 'img/" + LP_bees[i] + ".jpg' width = '600'>"
+      return "<img src = 'img/" + LP_bees[i] + ".jpg' width = '600'>"
     },
     prompt: "Harvest honey from this hive?",
     choices: ['Harvest', 'Avoid'],
     on_finish: function(data){
-        i = i + 1;
-        data.i = i;
-
-        return showActualPoints();
+      i = i + 1;
+      data.i = i;
+      return showActualPoints();
     },
     counter_displayed: function(data){
-        return pointsCurrent;
+      return pointsCurrent;
     },
 };
 
+
 var feedbackPartial = {
-    type: 'html-keyboard-response',
-    is_html:true,
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 2000,
-    stimulus: function(){
-      if (pointsAdded == 0) { 
-          return "You avoided this hive. You earned <b>" + pointsAdded + " </b>points."
-      }
-      else if (pointsAdded == 3){ // change depending on loss condition
-          return "You successfully harvested honey! You earned <b>" + pointsAdded + " </b>points."
-      } else {
-          return "Ouch, you were stung! You lost <b>" + pointsAdded + " </b>point." 
-      }
-    },
-    on_finish: function(data){
+  type: 'html-keyboard-response',
+  is_html:true,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 2000,
+  stimulus: function(){
+    if (pointsAdded == 0) {
+      return "You avoided this hive. You earned <b>" + pointsAdded + " </b>points."
+    }
+    else if (pointsAdded == 1){ // change depending on loss condition
+      return "You successfully harvested honey! You earned <b>" + pointsAdded + " </b>point."
+    } else {
+      return "Ouch, you were stung! You lost <b>" + pointsAdded + " </b>points." // maybe change to "you lost 3 points" rather than "lost -3"
+    }
+  },
+  on_finish: function(data){
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
     data.earnedCumulative = pointsCurrent;
     data.i = i;
-    }
+  }
 };
 
 var feedbackFull = {
-    type: 'html-keyboard-response',
-    is_html:true,
-    choices: jsPsych.NO_KEYS,
-    trial_duration: 2000,
-    on_start: function(){
+  type: 'html-keyboard-response',
+  is_html:true,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 2000,
+  on_start: function(){
     return pointsAdded;
-    },
-    stimulus: function(){
-    if (pointsAdded == 3){ // change depending on loss condition
-        return "You successfully harvested honey! You earned <b>" + pointsAdded + " </b>points."
-    } else if (pointsAdded == -1){
-        return "Ouch, you were stung! You lost <b>" + pointsAdded + " </b>point."
+  },
+  stimulus: function(){
+    if (pointsAdded == 1){ // change depending on loss condition
+      return "You successfully harvested honey! You earned <b>" + pointsAdded + " </b>point."
+    } else if (pointsAdded == -3){ 
+      return "Ouch, you were stung! You lost <b>" + pointsAdded + " </b>points."
     } else {
-        return ffAvoidFeedback()
+      return ffAvoidFeedback()
     }
-    },
-    on_finish: function(data){
+  },
+  on_finish: function(data){
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
     data.earnedCumulative = pointsCurrent;
     data.i = i;
-    }
+  }
 };
 
 
 // conditional thing for trials timeline
 function conditionalTimeline(){
-    if (feedback == 'partial'){
+  if (feedback == 'partial'){
     return [decision_LP, feedbackPartial];
-    } else {
+  } else {
     return [decision_LP, feedbackFull];
-    }
+  }
 };
 
 //
 var learningPhase = {
-    timeline: conditionalTimeline(),
-    repetitions: 128, //16,
-    randomize_order: false
+  timeline: conditionalTimeline(),
+  repetitions: 128, //16,
+  randomize_order: false
 };
-            
+          
 timeline.push(learningPhase);
 
 var TP_instructions = {
 type:'external-html',
-url: "./pages/testinstr-fl.html",
-cont_btn: "next",
+url: "./pages/testinstr-fg.html",
+cont_btn: "next"
 };
 
 timeline.push(TP_instructions);
 
 // the test phase
 var decision_TP = {
-    type: 'html-button-response',
-    stimulus: function(){
+      type: 'html-button-response',
+      stimulus: function(){
         return "<img src = 'img/" + TP_bees[k] + ".jpg' width = '600'>"
-    },
-    prompt: "Harvest honey from this hive?",
-    choices: ['Harvest', 'Avoid'],
-    on_finish: function(data){
-      k = k + 1;
-      data.k = k;
-    },
-};
+      },
+      prompt: "Harvest honey from this hive?",
+      choices: ['Harvest', 'Avoid'],
+      on_finish: function(data){
+        k = k + 1;
+        data.k = k;
+      },
+  };
 
 var feedbackTP = {
-type: 'html-keyboard-response',
-is_html:true,
-choices: jsPsych.NO_KEYS,
-trial_duration: 1400,
-on_start: function(){
+  type: 'html-keyboard-response',
+  is_html:true,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 1400,
+  on_start: function(){
     var lastChoice = jsPsych.data.get().last(1).values()[0].button_pressed; // get last avoid/approach decision
     var lastBee = jsPsych.data.get().last(1).values()[0].stimulus; // get last bee shown
-    // change based on permutation
+    // change based on dim permutation
     if (lastChoice == 0 && (makeConjunctionBees(lastBee))) { 
-    return pointsAdded = 3; // change depending on loss condition
+      return pointsAdded = -3; // change depending on loss condition
     } else if (lastChoice == 0){
-    return pointsAdded = -1;
+      return pointsAdded = 1;
     } else {
-    return pointsAdded = 0;
+      return pointsAdded = 0;
     }
-},
-stimulus: '', // don't show anything, move accumulating bit to on_start
-on_finish: function(data){
+  },
+  stimulus: '', 
+  on_finish: function(data){
     pointsCurrent = pointsCurrent + pointsAdded;
     data.earnedThis = pointsAdded;
-    data.earnedCumulative = pointsCurrent;
+    data.earnedCumulative = pointsCurrent;    
     data.k = k;
-}
+  }
 };
 
 var testPhase = {
-timeline: [decision_TP, feedbackTP],
-repetitions: 32,
-randomize_order: false,
+  timeline: [decision_TP, feedbackTP],
+  repetitions: 32,
+  randomize_order: false,
 };
 
 timeline.push(testPhase);
-
+  
 // posttask questionnaire
 
 var endquestions = {
