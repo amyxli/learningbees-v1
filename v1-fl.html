@@ -480,7 +480,6 @@ var decision_LP = {
     on_finish: function(data){
         i = i + 1;
         data.i = i;
-
         return showActualPoints();
     },
     counter_displayed: function(data){
@@ -619,7 +618,7 @@ var endquestions = {
   html: '<p> We have a couple of short questions before you complete the experiment. You will be eligible for payment once you answer the following questions. </p>'+
   '<p>About what percentage of beehives do you think contained dangerous bees? (enter a value between 0 and 100.)</p>' +
   '<input type="number" min="0" max="100"  onKeyUp="if(this.value>100){this.value=\'100\';}else if(this.value<0){this.value=\'0\';}" id="dangerpercent" name="dangerpercent" required>'+
-  '<p>Which features do you think were useful for deciding whether a bee variety was friendly or dangerous?</p>' +
+  '<p>Which features do you think were most useful for deciding whether a bee variety was friendly or dangerous?</p>' +
   '<input type="checkbox" name="legs" value="checked">Two or six legs<br>' +
   '<input type="checkbox"  name="body" value="checked">Stripes or spots on body<br>' +
   '<input type="checkbox"  name="wings" value="checked">Single or double wings<br>' +
