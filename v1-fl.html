@@ -1,3 +1,5 @@
+FBW
+
 <!DOCTYPE html>
 
 <html>
@@ -73,7 +75,7 @@
 jsPsych.data.addProperties({
   turkcode: turkcode,
   relevantDim: relevantDim,
-  condition: 'freqLoss',// frequent gain condition
+  condition: 'freqLoss',// frequent loss condition
   browserinfo: navigator.userAgent, 
 });
    
@@ -152,7 +154,7 @@ jsPsych.init({
   }
  
   // ------- Feedback Condition
-  var feedback = ['full', 'partial'];
+  var feedback = ['partial','full'];
   var feedback = jsPsych.randomization.sampleWithoutReplacement(feedback, 1)[0]; // not sure what this does
   jsPsych.data.addProperties({
           feedback: feedback
@@ -160,8 +162,8 @@ jsPsych.init({
 
   // ------- Permutation for relevant dims
 
-  var relevantDim = ['LB','LW','LA','BA','BW','WA'];
-  var relevantDim = jsPsych.randomization.sampleWithoutReplacement(relevantDim, 1)[0]; 
+  var relevantDim = ['BW'];
+
 
   // depending on permutation, change the subset of four (out of sixteen) 'target' bees that will be dangerous if approached
   function makeConjunctionBees(lastBee){
@@ -172,7 +174,7 @@ jsPsych.init({
     } else if (relevantDim == 'BA'){
       return lastBee =="<img src = 'img/A1-B1-L0-W0.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L1-W0.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L1-W1.jpg' width = '600'>";
     } else if (relevantDim == 'BW'){
-      return lastBee =="<img src = 'img/A0-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A0-B1-L1-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A0-B1-L0-W1.jpg' width = '600'>";
+      return lastBee =="<img src = 'img/A0-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A0-B1-L1-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L1-W1.jpg' width = '600'>";
     } else if (relevantDim == 'WA'){
       return lastBee =="<img src = 'img/A1-B0-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B0-L1-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L0-W1.jpg' width = '600'>" || lastBee == "<img src = 'img/A1-B1-L1-W1.jpg' width = '600'>";
     } else if (relevantDim == 'LW'){
@@ -235,7 +237,7 @@ jsPsych.init({
       'A0-B1-L0-W1',
       'A1-B1-L0-W1',
       'A0-B1-L1-W1',
-      'A0-B1-L0-W1',
+      'A1-B1-L1-W1',
     ]
   } else if (relevantDim == 'WA') {
     return [
@@ -618,7 +620,7 @@ var endquestions = {
   html: '<p> We have a couple of short questions before you complete the experiment. You will be eligible for payment once you answer the following questions. </p>'+
   '<p>About what percentage of beehives do you think contained dangerous bees? (enter a value between 0 and 100.)</p>' +
   '<input type="number" min="0" max="100"  onKeyUp="if(this.value>100){this.value=\'100\';}else if(this.value<0){this.value=\'0\';}" id="dangerpercent" name="dangerpercent" required>'+
-  '<p>Which features do you think were most useful for deciding whether a bee variety was friendly or dangerous?</p>' +
+  '<p>Which feature\/s do you think were most useful for deciding whether a bee variety was friendly or dangerous?</p>' +
   '<input type="checkbox" name="legs" value="checked">Two or six legs<br>' +
   '<input type="checkbox"  name="body" value="checked">Stripes or spots on body<br>' +
   '<input type="checkbox"  name="wings" value="checked">Single or double wings<br>' +
